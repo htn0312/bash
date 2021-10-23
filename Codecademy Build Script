@@ -1,0 +1,30 @@
+#!/bin/bash
+echo "Build script"
+firstline=$(head -n 1 source/changelog.md)
+read -a splitfirstline <<< $firstline
+version=${splitfirstline[1]}
+echo "The version you are building is" $version
+echo 'Do you want to continue? Enter "1" for yes, "0" for no '
+read versioncontinue
+if [ $versioncontinue -eq 1 ]
+then
+  echo "OK"
+  for filename in source/*
+  do
+    echo $filename
+  done
+  if [ "$filename" == "source/secretinfo.md" ]
+  then
+    echo "Not copying" $filename
+  else
+    echo "Copying" $filename
+    cp $filename build/.
+  fi
+else
+  echo "Come back when you are ready"
+fi
+cd build/
+# We'll add more code here later
+cd ..
+echo "Build version $version contains:"
+ls
